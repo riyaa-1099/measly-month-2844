@@ -1,13 +1,20 @@
 const express=require("express")
 const userRouter=express.Router();
-
+const Redis = require('ioredis');
 const jwt=require("jsonwebtoken")
 const bcrypt=require("bcrypt")
-
+const authentication=require("../middleware/authentication")
 require("dotenv").config();
 
-const {Usermodel}=require("../models/user.model")
+const redis = new Redis({
+  host: process.env.redishost,
+  port: process.env.redisport,
+  password: process.env.redispassword,
+  username: process.env.redisusername
+});
 
+
+const {Usermodel}=require("../models/user.model")
 
 userRouter.post("/signup",async (req,res)=>{
 const {email,password,name}=req.body;
@@ -76,6 +83,29 @@ userRouter.post("/login",async (req,res)=>{
     }
     })
 
+    //logout------------------------------------------------------------------>
+    userRouter.get('/logout',authentication, async (req, res) => {
+      // Log out the user
+      const token=req.headers?.authorization?.split(" ")[1];
+      await redis.sadd('blacklisted', token);
+      res.send({"msg":"logged out successfully"});
+    });
+
+    //checking blacklist--------------------------------------------------------->
+    userRouter.post('/blacklist',authentication, async(req, res) => {
+      const { token } = req.body;
+    
+     await redis.sismember('blacklist', token, (err, reply) => {
+        if (err) {
+          return res.status(500).json({ message: 'Error checking token in blacklist' });
+        }
+        if(reply === 1)
+        res.status(200).send({ "isBlacklisted": "true" });
+      else
+        res.status(200).send({ "isBlacklisted": "false" });
+       
+      });
+    });
 
 function tokencreate(res,userId,role){
 

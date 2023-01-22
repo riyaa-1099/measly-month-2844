@@ -12,23 +12,23 @@ require('dotenv').config();
 const authentication=async(req,res,next)=>{
     
 const token=req.headers.authorization?.split(" ")[1] ;
-//console.log(token)
+// console.log(token)
 if (!token) {
-    return res.status(401).send('You are not authorized.');
+    return res.status(401).send({"msg":"You are not authorized"});
 }
 
 const isBlacklisted = await redis.sismember('blacklisted', token);
 if (isBlacklisted) {
-    return res.status(401).send('You have been blacklisted. Please login again.');
+    return res.status(401).send({"msg":"You have been blacklisted. Please login again."});
 }
 
 try{
     const decoded=jwt.verify(token,process.env.secretKey);
-    // console.log(decoded)
+  
 if(decoded){
-
-const userID=decoded.userID;
-req.body.userID=userID;
+const userId=decoded.userId;
+req.body.userId=userId;
+// console.log(userId)
 next()
 
 }

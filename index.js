@@ -14,9 +14,9 @@ const app = express();
 app.use(express.json());
 app.use(cors({ origin: '*' }));
 
-const  authentication  = require("./Backend/middleware/authentication");
 const { connection } = require("./Backend/config/db");
 const { userRouter } = require("./Backend/routes/user.route");
+const  authentication  = require("./Backend/middleware/authentication");
 const { historyRouter } = require("./Backend/routes/history.route");
 
 app.get("/", (req, res) => {
@@ -31,7 +31,9 @@ app.get("/", (req, res) => {
   });
   
   app.use("/user", userRouter);
+
 app.use(authentication)
+
   app.use("/query", historyRouter);
 
   app.listen(7000, async () => {

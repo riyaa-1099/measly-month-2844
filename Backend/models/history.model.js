@@ -3,7 +3,7 @@ const mongoose=require("mongoose")
 const QuerySchema = new mongoose.Schema({
     userId: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
+        ref: 'Usermodel',
         required: true
     },
     url: {

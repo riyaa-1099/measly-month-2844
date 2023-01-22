@@ -1,13 +1,15 @@
 const express=require("express")
 const historyRouter=express.Router();
+const  authentication  = require("../middleware/authentication");
 
 const {Historymodel}=require("../models/history.model")
 
 
-
-historyRouter.post('/history', (req, res) => {
+historyRouter.post('/history',authentication, (req, res) => {
+    // console.log(req.body)
     const { userId, url, method } = req.body;
     const query = new Historymodel({ userId, url, method });
+    // console.log(req.body)
     if (req.body.headers) {
         query.headers = req.body.headers;
     }
@@ -24,7 +26,7 @@ historyRouter.post('/history', (req, res) => {
 });
 
 
-historyRouter.get('/showhistory', (req, res) => {
+historyRouter.get('/showhistory',authentication, (req, res) => {
     const { userId } = req.body;
     Historymodel.find({ userId: userId }).sort({ date: -1 }).limit(7)
         .then(queries => {
