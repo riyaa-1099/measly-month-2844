@@ -1,3 +1,3 @@
-const back_url="http://localhost:7000";
+const back_url = "https://tan-tame-swordfish.cyclic.app";
 
-export{back_url}
+export { back_url };
