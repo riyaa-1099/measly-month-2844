@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://kit.fontawesome.com/2515506460.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="signin.css">
+</head>
+<body>
+
+     
+    <div id="nav">
+        <div><img src="./Logo.png" alt="">
+        </div>
+    </div>
+
+
+    <div id="signin">
+
+       <h1>Sign in</h1>
+       <button id="btn1"> <div id="btnlogo"><img id="googleicon" src="./googleIcon.png" alt=""> Sign in with Google</div> </button>
+       <p id="or">or</p>
+
+       <form  id="form">
+         <input type="text" placeholder="Email address" class="inputs" id="email">
+         <input type="password" placeholder="Password" class="inputs" id="password">
+         
+         <div id="checkbox">
+             <input type="checkbox" class="check" ><p id="para">Keep me signed in</p>
+         </div>
+         
+         <p class="para2">Selecting this checkbox will keep you signed into your account on this device until you sign out. Do not select this on shared devices</p>
+         <p class="para2">By signing in, I agree to the Travelocity <a href="">Terms and Conditions</a>   and <a href="">Privacy Staement.</a></p>
+         
+         <input id="submit" type="submit"  value="submit" />
+         
+         <a href="" id="foreget_pass">Forget password?</a>
+         <p class="bottom">Don't have an account? <a href="./createaccount.html" id="create_one">Create one</a></p>
+         <p class="bottom">or continue with</p>
+         
+         <div id="icon">
+             <i class="fa-brands fa-apple"></i>
+             <i class="fa-brands fa-square-facebook"></i> 
+         </div>
+     
+     </form>
+    </div>
+       
+
+    </div>    
+</body>
+</html>
+
+<script type="module">
+     import { back_url } from "./url.js";
+    document.querySelector("#form").addEventListener("submit",myfunction)
+       
+      async function myfunction(){
+           event.preventDefault()
+         let body={
+           
+            email:form.email.value,
+            password:form.password.value,
+            
+           }; 
+
+           const login_api = `${back_url}/user/login`;
+    const res = await fetch(login_api, {
+      method: "POST",
+      body: JSON.stringify(body),
+      headers: { "Content-Type": "application/json" },
+    });
+    const data = await res.json();
+    localStorage.setItem("token", data.token);
+       localStorage.setItem("refreshToken", data.refreshToken);
+    console.log(data);
+             window.location.href="index.html"
+     
+       }
+                   
+   </script>
