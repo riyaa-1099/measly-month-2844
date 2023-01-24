@@ -1,5 +1,6 @@
 let addedParamCount = 0;
 let addedHeaderCount = 0;
+let flag=false;
 let token1 = localStorage.getItem("token");
 import { back_url } from "./url.js";
 
@@ -92,7 +93,7 @@ addParam.addEventListener("click", () => {
 
   //add eventlistener to remove on clicking - button
   let deleteParam = document.getElementsByClassName("deleteParam");
-  for (item of deleteParam) {
+  for (let item of deleteParam) {
     item.addEventListener("click", (e) => {
       e.target.parentElement.remove();
     });
@@ -125,7 +126,7 @@ addHeader.addEventListener("click", () => {
 
   //add eventlistener to remove on clicking - button
   let deleteHeader = document.getElementsByClassName("deleteHeader");
-  for (item of deleteHeader) {
+  for (let item of deleteHeader) {
     item.addEventListener("click", (e) => {
       e.target.parentElement.remove();
     });
@@ -139,6 +140,9 @@ addHeader.addEventListener("click", () => {
 let submit = document.getElementById("submit");
 
 submit.addEventListener("click", async () => {
+  if(flag===false){
+    return alert("Please login/signup to use")
+  }
   //show please wait in response box
   document.getElementById("responseJsonText").innerHTML =
     "Please wait.... fetching request";
@@ -175,12 +179,12 @@ submit.addEventListener("click", async () => {
     alert("Please enter url")
     return console.log("url not entered");
   }
-  //log all values in console for debugging
-  // console.log("url is", url);
-  // console.log("request type:", method);
-  // console.log("datap", params);
-  // console.log("datah", headers);
-  // console.log("body", body);
+ //for debugging
+  console.log("url is", url);
+  console.log("request type:", method);
+  console.log("datap", params);
+  console.log("datah", headers);
+  console.log("body", body);
 
   let requestUrl = url;
   if (method === "GET" || method === "DELETE") {
@@ -242,7 +246,6 @@ submit.addEventListener("click", async () => {
     });
     const data = await res.json();
     console.log(data);
-
 
     document.getElementById("responseJsonText").innerHTML = (data2);
     Prism.highlightAll();
@@ -326,15 +329,16 @@ urlCell.addEventListener("click",()=>{
 
 
 //-------------------------checking token-------------------------//
-
 // check for the token in the blacklist
 checkTokenInBlacklist(token1)
 
 async function checkTokenInBlacklist(token)  {
 
   // check for the presence of the token in local storage
-  if(!token) return alert("Login please to continue!")
-
+  if(!token){
+   
+     return alert("Login please to continue!")
+  }
   const api = `${back_url}/user/blacklist`;
   try {
     const response = await fetch(api,{
@@ -344,28 +348,17 @@ async function checkTokenInBlacklist(token)  {
       Authorization: `Bearer ${token}`, },
     });
     const data = await response.json();
-
+    
     if(data.isBlacklisted==="true"){
-  
+      // console.log("blacklisted")
     document.getElementById("showname").innerHTML="Please Login!"
   }
   else if(data.isBlacklisted==="false"){
-
+    // console.log("not blacklisted")
+    flag=true;
     getLastFiveQueries();
   }
   } catch (error) {
     console.error(error);
   }
 }
-
-
-
-
-let queryevent = document.getElementsByClassName("clickquery");
-  for (item of queryevent) {
-    item.addEventListener("click", (e) => {
-
-
-
-    });
-  }
