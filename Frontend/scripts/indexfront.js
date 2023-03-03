@@ -142,6 +142,7 @@ let submit = document.getElementById("submit");
 submit.addEventListener("click", async () => {
   if(flag===false){
     return alert("Please login/signup to use")
+    
   }
   //show please wait in response box
   document.getElementById("responseJsonText").innerHTML =
