@@ -6,13 +6,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <script src="https://kit.fontawesome.com/2515506460.js" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="signin.css">
+    <link rel="stylesheet" href="./styles/signin.css">
 </head>
 <body>
 
      
     <div id="nav">
-        <div><img src="./Logo.png" alt="">
+        <div><img src="./images/Logo.png" alt="">
         </div>
     </div>
 
@@ -20,7 +20,7 @@
     <div id="signin">
 
        <h1>Sign in</h1>
-       <button id="btn1"> <div id="btnlogo"><img id="googleicon" src="./googleIcon.png" alt=""> Sign in with Google</div> </button>
+       <button id="btn1"> <div id="btnlogo"><img id="googleicon" src="./images/googleIcon.png" alt=""> Sign in with Google</div> </button>
        <p id="or">or</p>
 
        <form  id="form">
@@ -53,31 +53,4 @@
 </body>
 </html>
 
-<script type="module">
-     import { back_url } from "./url.js";
-    document.querySelector("#form").addEventListener("submit",myfunction)
-       
-      async function myfunction(){
-           event.preventDefault()
-         let body={
-           
-            email:form.email.value,
-            password:form.password.value,
-            
-           }; 
-
-           const login_api = `${back_url}/user/login`;
-    const res = await fetch(login_api, {
-      method: "POST",
-      body: JSON.stringify(body),
-      headers: { "Content-Type": "application/json" },
-    });
-    const data = await res.json();
-    localStorage.setItem("token", data.token);
-       localStorage.setItem("refreshToken", data.refreshToken);
-   
-             window.location.href="index.html"
-     console.log(data)
-       }
-                   
-   </script>
+<script src="./scripts/signin.js" type="module"></script>
